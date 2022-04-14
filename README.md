@@ -1,6 +1,6 @@
 # Banner-for-KIM-1
 
-![](image)
+![](https://raw.githubusercontent.com/netzherpes/Banner-for-KIM-1/main/image/test.jpg)
 
 KIM-1 Banner<br>
 by Jim Zuber<br>
