@@ -1,9 +1,11 @@
 # Banner-for-KIM-1
 
-KIM-1 Banner
-by Jim Zuber
-   20224 Cohasset #16 
-   Conga Park, Ca 91306
+![](image)
+
+KIM-1 Banner<br>
+by Jim Zuber<br>
+   20224 Cohasset #16 <br>
+   Conga Park, Ca 91306<br>
 
 from KIM USER NOTES #18
 
