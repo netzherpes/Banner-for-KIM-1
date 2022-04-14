@@ -11,13 +11,13 @@ Instructions:
 Load both parts (program and data).
 Start the program at location $2000. 
 
-Type in the text you want bannered in UPPER CASE. 
+Type in the text you want bannered in UPPER CASE. <br>
 supported letters are:
 
-A-Z 
-0-9
-.:,;-+*()$
-(return is treated as space.)
+A-Z <br>
+0-9<br>
+.:,;-+*()$<br>
+(return is treated as space.)<br>
 
 End your Entry with an @
 hit enter and watch the show
