@@ -1,0 +1,212 @@
+ca65 V2.19 - Git 4f87c7c
+Main file   : .\KIM-1_Banner.S
+Current file: .\KIM-1_Banner.S
+
+000000r 1               ;*****************************
+000000r 1               ;* KIM-1 Banner              *
+000000r 1               ;* by Jim Zuber              *
+000000r 1               ;*    20224 Cohasset #16     *
+000000r 1               ;*    Conga Park, Ca 91306   *
+000000r 1               ;*                           *
+000000r 1               ;* Instructions:             *
+000000r 1               ;* Start the Program at      *
+000000r 1               ;* location $2000.           *
+000000r 1               ;*                           *
+000000r 1               ;* Type in the Text you want *
+000000r 1               ;* bannered in UPPER CASE.   *
+000000r 1               ;* supported letters are:    *
+000000r 1               ;*                           *
+000000r 1               ;* A-Z                       *
+000000r 1               ;* 0-9                       *
+000000r 1               ;* .:,;-+*()$                *
+000000r 1               ;* (return is treated as     *
+000000r 1               ;* space.)                   *
+000000r 1               ;*                           *
+000000r 1               ;* End your Entry with an @  *
+000000r 1               ;* hit enter and watch the   *
+000000r 1               ;* show                      *
+000000r 1               ;*****************************
+000000r 1               
+000000r 1               CRLF     =       $1e2f
+000000r 1               GETCH    =       $1e5a
+000000r 1               OUTCH    =       $1ea0
+000000r 1               
+000000r 1                        .org    $2000
+002000  1  4C 0E 20     STAR:    jmp     OVER
+002003  1               
+002003  1  4C 2C 21     INV:     jmp     INPT
+002006  1               
+002006  1  4C 34 21     OUTV:    jmp     OUTC
+002009  1               
+002009  1  00           TBLL:    .byte   $00
+00200A  1  22           TBLH:    .byte   $22
+00200B  1  40           PRCH:    .byte   $40
+00200C  1  50           BUFL:    .byte   $50
+00200D  1  21           BUFH:    .byte   $21
+00200E  1               
+00200E  1  D8           OVER:    cld
+00200F  1  A0 00                 ldy     #$00
+002011  1  20 FA 20              jsr     INTB
+002014  1  A9 3E                 lda     #$3e
+002016  1  20 06 20              jsr     OUTV
+002019  1  20 06 20              jsr     OUTV
+00201C  1  A9 0D                 lda     #$0d
+00201E  1  20 06 20              jsr     OUTV
+002021  1  20 03 20     CHAR:    jsr     INV
+002024  1  91 02                 sta     ($02),y
+002026  1  C9 40                 cmp     #$40
+002028  1  F0 06                 beq     CHEK
+00202A  1  20 10 21              jsr     INCB
+00202D  1  4C 21 20              jmp     CHAR
+002030  1               
+002030  1  20 FA 20     CHEK:    jsr     INTB
+002033  1  A0 00        LOP3:    ldy     #$00
+002035  1  B1 02                 lda     ($02),y
+002037  1  C9 40                 cmp     #$40
+002039  1  F0 17                 beq     OK
+00203B  1  85 04                 sta     $04
+00203D  1  20 C9 20              jsr     FDCH
+002040  1  C9 FF                 cmp     #$ff
+002042  1  D0 08                 bne     LOP4
+002044  1  A5 04                 lda     $04
+002046  1  20 06 20              jsr     OUTV
+002049  1  4C 00 20              jmp     STAR
+00204C  1               
+00204C  1  20 10 21     LOP4:    jsr     INCB
+00204F  1  4C 33 20              jmp     LOP3
+002052  1               
+002052  1  A9 4F        OK:      lda     #$4f
+002054  1  20 06 20              jsr     OUTV
+002057  1  A9 4B                 lda     #$4b
+002059  1  20 06 20              jsr     OUTV
+00205C  1  A9 0D                 lda     #$0d
+00205E  1  20 06 20              jsr     OUTV
+002061  1  20 03 20              jsr     INV
+002064  1  20 FA 20              jsr     INTB
+002067  1  A0 00        LOP6:    ldy     #$00
+002069  1  B1 02                 lda     ($02),y
+00206B  1  C9 40                 cmp     #$40
+00206D  1  D0 03                 bne     LOP7
+00206F  1  4C 00 20              jmp     STAR
+002072  1               
+002072  1  85 04        LOP7:    sta     $04
+002074  1  20 C9 20              jsr     FDCH
+002077  1  20 8B 20              jsr     PNTC
+00207A  1  A9 0D                 lda     #$0d
+00207C  1  20 06 20              jsr     OUTV
+00207F  1  20 06 20              jsr     OUTV
+002082  1  20 06 20              jsr     OUTV
+002085  1  20 10 21              jsr     INCB
+002088  1  4C 67 20              jmp     LOP6
+00208B  1               
+00208B  1  A0 00        PNTC:    ldy     #$00
+00208D  1  B1 00                 lda     ($00),y
+00208F  1  C9 EE                 cmp     #$ee
+002091  1  D0 08                 bne     LP10
+002093  1  A9 0D                 lda     #$0d
+002095  1  20 06 20              jsr     OUTV
+002098  1  4C BF 20              jmp     STOP
+00209B  1               
+00209B  1  85 04        LP10:    sta     $04
+00209D  1  29 80                 and     #$80
+00209F  1  D0 0D                 bne     MARK
+0020A1  1  A4 04                 ldy     $04
+0020A3  1  A9 20        LP11:    lda     #$20
+0020A5  1  20 06 20              jsr     OUTV
+0020A8  1  88                    dey
+0020A9  1  F0 14                 beq     STOP
+0020AB  1  4C A3 20              jmp     LP11
+0020AE  1               
+0020AE  1  A5 04        MARK:    lda     $04
+0020B0  1  29 7F                 and     #$7f
+0020B2  1  A8                    tay
+0020B3  1  AD 0B 20     LP12:    lda     PRCH
+0020B6  1  20 06 20              jsr     OUTV
+0020B9  1  88                    dey
+0020BA  1  F0 03                 beq     STOP
+0020BC  1  4C B3 20              jmp     LP12
+0020BF  1               
+0020BF  1  CA           STOP:    dex
+0020C0  1  F0 06                 beq     LP13
+0020C2  1  20 1E 21              jsr     INCP
+0020C5  1  4C 8B 20              jmp     PNTC
+0020C8  1               
+0020C8  1  60           LP13:    rts
+0020C9  1               
+0020C9  1  20 05 21     FDCH:    jsr     INTP
+0020CC  1  A0 00        LOP1:    ldy     #$00
+0020CE  1  B1 00                 lda     ($00),y
+0020D0  1  C9 FF                 cmp     #$ff
+0020D2  1  F0 1B                 beq     OUT
+0020D4  1  C5 04                 cmp     $04
+0020D6  1  F0 18                 beq     OUT1
+0020D8  1  C8                    iny
+0020D9  1  B1 00                 lda     ($00),y
+0020DB  1  18                    clc
+0020DC  1  65 00                 adc     $00
+0020DE  1  85 00                 sta     $00
+0020E0  1  A9 00                 lda     #$00
+0020E2  1  65 01                 adc     $01
+0020E4  1  85 01                 sta     $01
+0020E6  1  20 1E 21              jsr     INCP
+0020E9  1  20 1E 21              jsr     INCP
+0020EC  1  4C CC 20              jmp     LOP1
+0020EF  1               
+0020EF  1  60           OUT:     rts
+0020F0  1               
+0020F0  1  20 1E 21     OUT1:    jsr     INCP
+0020F3  1  B1 00                 lda     ($00),y
+0020F5  1  AA                    tax
+0020F6  1  20 1E 21              jsr     INCP
+0020F9  1  60                    rts
+0020FA  1               
+0020FA  1  AD 0C 20     INTB:    lda     BUFL
+0020FD  1  85 02                 sta     $02
+0020FF  1  AD 0D 20              lda     BUFH
+002102  1  85 03                 sta     $03
+002104  1  60                    rts
+002105  1               
+002105  1  AD 09 20     INTP:    lda     TBLL
+002108  1  85 00                 sta     $00
+00210A  1  AD 0A 20              lda     TBLH
+00210D  1  85 01                 sta     $01
+00210F  1  60                    rts
+002110  1               
+002110  1  18           INCB:    clc
+002111  1  A5 02                 lda     $02
+002113  1  69 01                 adc     #$01
+002115  1  85 02                 sta     $02
+002117  1  A5 03                 lda     $03
+002119  1  69 00                 adc     #$00
+00211B  1  85 03                 sta     $03
+00211D  1  60                    rts
+00211E  1               
+00211E  1  18           INCP:    clc
+00211F  1  A5 00                 lda     $00
+002121  1  69 01                 adc     #$01
+002123  1  85 00                 sta     $00
+002125  1  A5 01                 lda     $01
+002127  1  69 00                 adc     #$00
+002129  1  85 01                 sta     $01
+00212B  1  60                    rts
+00212C  1               
+00212C  1  84 06        INPT:    sty     $06
+00212E  1  20 5A 1E              jsr     GETCH
+002131  1  A4 06                 ldy     $06
+002133  1  60                    rts
+002134  1               
+002134  1  48           OUTC:    pha
+002135  1  86 05                 stx     $05
+002137  1  84 06                 sty     $06
+002139  1  C9 0D                 cmp     #$0d
+00213B  1  D0 06                 bne     CONT
+00213D  1  20 2F 1E              jsr     CRLF
+002140  1  4C 46 21              jmp     RESTOR
+002143  1               
+002143  1  20 A0 1E     CONT:    jsr     OUTCH
+002146  1  A6 05        RESTOR:  ldx     $05
+002148  1  A4 06                 ldy     $06
+00214A  1  68                    pla
+00214B  1  60                    rts
+00214C  1               
+00214C  1               
